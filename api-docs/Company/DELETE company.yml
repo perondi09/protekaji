@@ -1,0 +1,15 @@
+info:
+  name: DELETE company
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: http://localhost:8080/companies/1b5cea58-cd7c-4c83-a37f-b94e0bb3f3f1
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,21 @@
+info:
+  name: PATCH extinguisher
+  type: http
+  seq: 4
+
+http:
+  method: PATCH
+  url: http://localhost:8080/extinguishers/40f03c3e-0def-4731-b33c-0edfa79b61f6
+  body:
+    type: json
+    data: |-
+      {
+        "manufacturer": "Bucka Atualizada"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
