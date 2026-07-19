@@ -1,0 +1,15 @@
+info:
+  name: DELETE extinguisher
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: http://localhost:8080/extinguishers/40f03c3e-0def-4731-b33c-0edfa79b61f6
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

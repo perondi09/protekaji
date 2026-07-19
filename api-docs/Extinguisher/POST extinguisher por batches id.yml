@@ -1,0 +1,25 @@
+info:
+  name: POST extinguisher por batches id
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8080/extinguishers
+  body:
+    type: json
+    data: |-
+      {
+        "batch_id": "7016f742-e33b-4f13-8013-df0b6f0e2864",
+        "serie_number": "EXT-998879",
+        "extinguisher_type": "PO_ABC",
+        "unit": "KG",
+        "manufacturer": "Bucka"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

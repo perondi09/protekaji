@@ -1,0 +1,31 @@
+info:
+  name: POST company
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8080/companies
+  body:
+    type: json
+    data: |-
+      {
+        "company_name": "Perondi extintores",
+        "cnpj": "12345678000191",
+        "address": {
+          "street": "Rua Wadia Jafet Assad",
+          "street_number": "666",
+          "complement": "APTO 1",
+          "district": "Dos Casas",
+          "city": "São Bernardo do Campo",
+          "state": "SP",
+          "zip_code": "09850090"
+        }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

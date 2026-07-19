@@ -1,0 +1,22 @@
+info:
+  name: POST batches
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:8080/batches
+  body:
+    type: json
+    data: |-
+      {
+        "company_name": "Perondi",
+        "cnpj": "12345678000199"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
