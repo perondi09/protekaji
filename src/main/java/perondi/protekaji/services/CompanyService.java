@@ -1,6 +1,7 @@
 package perondi.protekaji.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import perondi.protekaji.dtos.address.AddressDTO;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -40,10 +42,14 @@ public class CompanyService {
         company.setAddressEntity(toAddressEntity(dto.address()));
 
         CompanyEntity saved = companyRepository.save(company);
+        log.info("Empresa {} criada (CNPJ {})", saved.getId(), saved.getCnpj());
+
         return toResponseDTO(saved, List.of());
     }
 
     public List<CompanyResponseDTO> findAll() {
+        log.debug("Listando todas as empresas");
+
         List<CompanyEntity> companies = companyRepository.findAll();
         List<UUID> companyIds = companies.stream().map(CompanyEntity::getId).collect(Collectors.toList());
 
@@ -59,6 +65,8 @@ public class CompanyService {
     }
 
     public CompanyResponseDTO findById(UUID id) {
+        log.debug("Buscando empresa {}", id);
+
         CompanyEntity company = companyRepository.findById(id)
                 .orElseThrow(() -> new CompanyNotFoundException(id));
 
@@ -90,6 +98,7 @@ public class CompanyService {
         }
 
         CompanyEntity saved = companyRepository.save(existing);
+        log.info("Empresa {} atualizada", saved.getId());
 
         List<UUID> batchIds = batchRepository.findByCompanyId(id).stream()
                 .map(BatchEntity::getId)
@@ -103,6 +112,7 @@ public class CompanyService {
         CompanyEntity existing = companyRepository.findById(id)
                 .orElseThrow(() -> new CompanyNotFoundException(id));
         companyRepository.delete(existing);
+        log.info("Empresa {} removida", id);
     }
 
     private CompanyResponseDTO toResponseDTO(CompanyEntity entity, List<UUID> batchesIds) {

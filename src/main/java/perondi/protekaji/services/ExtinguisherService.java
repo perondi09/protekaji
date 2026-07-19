@@ -1,6 +1,7 @@
 package perondi.protekaji.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import perondi.protekaji.dtos.extinguisher.ExtinguisherDetailedResponseDTO;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -45,27 +47,33 @@ public class ExtinguisherService {
         extinguisher.setManufacturer(dto.manufacturer());
 
         ExtinguisherEntity saved = extinguisherRepository.save(extinguisher);
+        log.info("Extintor {} (série {}) criado no lote {}", saved.getId(), saved.getSerie_number(), batch.getId());
+
         return toSimpleResponseDTO(saved);
     }
 
     public List<ExtinguisherSimpleResponseDTO> findAll() {
+        log.debug("Listando todos os extintores");
         return extinguisherRepository.findAll().stream()
                 .map(this::toSimpleResponseDTO)
                 .collect(Collectors.toList());
     }
 
     public List<ExtinguisherSimpleResponseDTO> findByBatchId(UUID batch_id) {
+        log.debug("Listando extintores do lote {}", batch_id);
         return extinguisherRepository.findByBatchId(batch_id).stream()
                 .map(this::toSimpleResponseDTO)
                 .collect(Collectors.toList());
     }
 
     public Optional<ExtinguisherDetailedResponseDTO> findBySerieNumber(String serieNumber) {
+        log.debug("Buscando extintor pela série {}", serieNumber);
         return extinguisherRepository.findBySerieNumber(serieNumber)
                 .map(this::toDetailedResponseDTO);
     }
 
     public ExtinguisherDetailedResponseDTO findById(UUID id) {
+        log.debug("Buscando extintor {}", id);
         ExtinguisherEntity extinguisher = extinguisherRepository.findById(id)
                 .orElseThrow(() -> new ExtinguisherNotFoundException(id));
         return toDetailedResponseDTO(extinguisher);
@@ -102,6 +110,8 @@ public class ExtinguisherService {
         }
 
         ExtinguisherEntity saved = extinguisherRepository.save(existing);
+        log.info("Extintor {} atualizado", saved.getId());
+
         return toSimpleResponseDTO(saved);
     }
 
@@ -110,6 +120,7 @@ public class ExtinguisherService {
         ExtinguisherEntity existing = extinguisherRepository.findById(id)
                 .orElseThrow(() -> new ExtinguisherNotFoundException(id));
         extinguisherRepository.delete(existing);
+        log.info("Extintor {} removido", id);
     }
 
     private ExtinguisherSimpleResponseDTO toSimpleResponseDTO(ExtinguisherEntity entity) {
